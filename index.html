@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#142b3b">
+<meta name="description" content="Registre del son i del rendiment al gimnàs per al Treball de Recerca.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Son & Rendiment · TR</title>
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#172b3a;--muted:#617382;--line:#dce5ea;--accent:#176b87;--accent2:#dff2f6;--danger:#a53636;--shadow:0 5px 18px #1730440c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#142b3b,#176b87);color:white;padding:24px 18px 28px}
+.header-inner,main{max-width:920px;margin:auto}header .eyebrow{font-size:.76rem;text-transform:uppercase;letter-spacing:.13em;opacity:.8;font-weight:700}h1{font-size:1.8rem;line-height:1.15;margin:.45rem 0 .5rem}header p{margin:0;max-width:650px;color:#e2f0f4}
+main{padding:16px 12px 42px}.nav{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px}.tab{border:1px solid var(--line);border-radius:999px;background:white;padding:10px 15px;font-weight:700;color:var(--muted);white-space:nowrap}.tab.active{background:var(--ink);border-color:var(--ink);color:white}
+.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:var(--shadow)}h2{font-size:1.15rem;margin:0 0 5px}h3{font-size:.98rem;margin:0 0 12px}.sub{color:var(--muted);font-size:.9rem;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px}input,select,textarea{width:100%;min-height:45px;border:1px solid #cbd7df;border-radius:11px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}input:focus,select:focus,textarea:focus{outline:3px solid #176b8725;border-color:var(--accent)}input[type=range]{padding:0;min-height:28px;accent-color:var(--accent)}.range-line{display:flex;align-items:center;justify-content:space-between;gap:8px}.score{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}.hint{font-size:.78rem;color:var(--muted);margin-top:4px}
+.section-head{display:flex;align-items:center;gap:9px;margin:2px 0 13px}.icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--accent2);font-size:1.1rem}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.btn{border:0;border-radius:12px;min-height:46px;padding:11px 15px;font:inherit;font-weight:750;background:var(--accent);color:white;cursor:pointer}.btn.secondary{background:#e8eef2;color:var(--ink)}.btn.danger{background:#fbeaea;color:var(--danger)}.btn:active{transform:scale(.99)}.notice{padding:11px 13px;background:#edf7f8;border-radius:12px;color:#245667;font-size:.87rem;margin-bottom:14px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stat{padding:13px;border:1px solid var(--line);border-radius:14px;background:#fbfdfe}.stat strong{display:block;font-size:1.45rem;letter-spacing:-.03em}.stat span{font-size:.78rem;color:var(--muted)}
+.chart-wrap{position:relative;width:100%;height:250px;margin-top:10px}canvas{width:100%;height:100%;display:block}.chart-note{font-size:.82rem;color:var(--muted);margin:8px 0 0}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.84rem;white-space:nowrap}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.04em}td .small-btn{border:0;background:#e8eef2;color:var(--ink);border-radius:8px;padding:7px 9px;font-weight:700;margin-right:4px}.empty{padding:24px;text-align:center;color:var(--muted);background:#f8fafb;border-radius:12px}
+footer{max-width:920px;margin:auto;padding:0 16px 30px;color:var(--muted);font-size:.8rem}
+@media(min-width:650px){main{padding:22px 20px 50px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.field.full{grid-column:span 3}.card{padding:21px}h1{font-size:2.2rem}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}h1{font-size:1.55rem}}
+</style>
+</head>
+<body>
+<header><div class="header-inner"><div class="eyebrow">Quadern de recerca · TR</div><h1>Son & Rendiment</h1><p>Registra el descans, com et trobes i el rendiment al gimnàs. Les dades es guarden en aquest dispositiu.</p></div></header>
+<main>
+<nav class="nav" aria-label="Seccions">
+<button class="tab active" data-tab="registre">＋ Registre diari</button>
+<button class="tab" data-tab="historial">Historial</button>
+<button class="tab" data-tab="analisi">Gràfics i resum</button>
+</nav>
+<section id="registre" class="panel active">
+<div class="notice">Consell: omple el registre cada dia, també els dies de descans. El rellotge pot estimar el son, però introdueix les dades manualment.</div>
+<form id="entryForm">
+<div class="card">
+<div class="section-head"><div class="icon">🌙</div><div><h2>1. Dades del son</h2><div class="sub" style="margin:0">Dades del rellotge i sensació en despertar-te.</div></div></div>
+<div class="grid">
+<div class="field"><label for="date">Data</label><input id="date" name="date" type="date" required></div>
+<div class="field"><label for="sleepHours">Hores dormides</label><input id="sleepHours" name="sleepHours" type="number" min="0" max="24" step="0.25" placeholder="Ex. 7.5" required><div class="hint">Ex.: 7,5 = 7 h i 30 min</div></div>
+<div class="field"><label for="awakenings">Despertars durant la nit</label><input id="awakenings" name="awakenings" type="number" min="0" max="30" step="1" placeholder="Ex. 2" required></div>
+<div class="field"><label for="sleepQuality">Qualitat del son</label><div class="range-line"><input id="sleepQuality" name="sleepQuality" type="range" min="1" max="10" value="7"><span class="score" id="sleepQualityVal">7/10</span></div><div class="hint">1 = molt dolenta · 10 = excel·lent</div></div>
+<div class="field"><label for="rested">Sensació de descans en despertar-te</label><div class="range-line"><input id="rested" name="rested" type="range" min="1" max="10" value="7"><span class="score" id="restedVal">7/10</span></div><div class="hint">1 = gens descansat · 10 = molt descansat</div></div>
+</div>
+</div>
+<div class="card">
+<div class="section-head"><div class="icon">🧠</div><div><h2>2. Estat físic i mental</h2><div class="sub" style="margin:0">Valora com et sents aquell dia.</div></div></div>
+<div class="grid">
+<div class="field"><label for="mood">Estat d'ànim</label><div class="range-line"><input id="mood" name="mood" type="range" min="1" max="10" value="7"><span class="score" id="moodVal">7/10</span></div></div>
+<div class="field"><label for="stress">Estrès del dia</label><div class="range-line"><input id="stress" name="stress" type="range" min="1" max="10" value="5"><span class="score" id="stressVal">5/10</span></div><div class="hint">1 = molt baix · 10 = molt alt</div></div>
+<div class="field"><label for="tiredness">Sensació de cansament</label><div class="range-line"><input id="tiredness" name="tiredness" type="range" min="1" max="10" value="5"><span class="score" id="tirednessVal">5/10</span></div><div class="hint">1 = gens cansat · 10 = molt cansat</div></div>
+<div class="field"><label for="energy">Energia general</label><div class="range-line"><input id="energy" name="energy" type="range" min="1" max="10" value="7"><span class="score" id="energyVal">7/10</span></div><div class="hint">1 = molt baixa · 10 = molt alta</div></div>
+</div>
+</div>
+<div class="card">
+<div class="section-head"><div class="icon">🏋️</div><div><h2>3. Entrenament</h2><div class="sub" style="margin:0">El dia de la setmana suggereix la teva rutina, però la pots canviar.</div></div></div>
+<div class="grid">
+<div class="field full"><label for="workout">Entrenament fet</label><select id="workout" name="workout"><option value="Descans">Descans</option><option value="Pit + bíceps">Pit + bíceps</option><option value="Cames">Cames</option><option value="Esquena + tríceps">Esquena + tríceps</option><option value="Pit + esquena + espatlles + abdomen">Pit + esquena + espatlles + abdomen</option><option value="Cardio">Cardio</option><option value="Altre">Altre</option></select></div>
+<div class="field full"><label for="performance">Rendiment al gimnàs</label><div class="range-line"><input id="performance" name="performance" type="range" min="1" max="10" value="7"><span class="score" id="performanceVal">7/10</span></div><div class="hint">Valora el rendiment només si has entrenat. 1 = molt baix · 10 = excel·lent.</div></div>
+<div class="field full"><label for="notes">Observacions (opcional)</label><textarea id="notes" name="notes" rows="2" maxlength="500" placeholder="Ex.: entrenament diferent, malestar, canvi d'horari..."></textarea></div>
+</div>
+<div class="actions"><button class="btn" type="submit" id="saveBtn">Desa el registre</button><button class="btn secondary" type="button" id="resetBtn">Neteja el formulari</button></div>
+<p class="hint" id="formStatus" role="status" aria-live="polite"></p>
+</div>
+</form>
+</section>
+<section id="historial" class="panel">
+<div class="card"><h2>Historial de registres</h2><p class="sub">Pots editar o eliminar un dia. Si tornes a desar una data existent, s'actualitza el registre.</p>
+<div class="actions" style="margin-top:0;margin-bottom:14px"><button class="btn" id="exportBtn">Exporta CSV</button><button class="btn secondary" id="backupBtn">Còpia de seguretat JSON</button><button class="btn secondary" id="importBtn">Importa JSON</button><input id="importFile" type="file" accept=".json,application/json" hidden></div>
+<div id="historyContent"></div></div>
+</section>
+<section id="analisi" class="panel">
+<div class="card"><h2>Resum de les dades</h2><p class="sub">Càlculs a partir dels registres que has desat. Són descriptius, no demostren causalitat.</p><div class="stats"><div class="stat"><strong id="avgSleep">—</strong><span>Hores de son de mitjana</span></div><div class="stat"><strong id="avgPerformance">—</strong><span>Rendiment mitjà (dies entrenats)</span></div><div class="stat"><strong id="daysCount">0</strong><span>Dies registrats</span></div></div></div>
+<div class="card"><h2>Hores de son i rendiment</h2><p class="sub">Cada punt representa un dia d'entrenament. Busca patrons, tenint en compte que hi poden influir altres factors.</p><div class="chart-wrap"><canvas id="scatterChart" aria-label="Gràfic de son i rendiment"></canvas></div><p class="chart-note" id="scatterNote">Encara no hi ha dades suficients.</p></div>
+<div class="card"><h2>Evolució diària</h2><p class="sub">Comparació de les hores dormides i de la valoració del rendiment.</p><div class="chart-wrap"><canvas id="trendChart" aria-label="Gràfic d'evolució diària"></canvas></div><p class="chart-note">Les línies utilitzen escales diferents: hores de son a l'esquerra i valoració /10 a la dreta.</p></div>
+<div class="card"><h2>Comparació per quantitat de son</h2><p class="sub">Mitjana del rendiment per grup de durada del son. Els grups amb pocs dies poden ser poc representatius.</p><div id="sleepGroups" class="empty">Desa alguns registres per veure la comparació.</div></div>
+</section>
+</main>
+<footer>Les dades es desen localment al navegador d'aquest dispositiu. No s'envien a cap servidor. Exporta'n una còpia periòdicament per no perdre-les si esborres les dades del navegador o canvies de dispositiu.</footer>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const STORAGE_KEY='son-rendiment-tr-v1';
+const rangeNames=['sleepQuality','rested','mood','stress','tiredness','energy','performance'];
+let records=loadRecords(), editingDate=null;
+function localDate(d=new Date()){const off=d.getTimezoneOffset();return new Date(d.getTime()-off*60000).toISOString().slice(0,10)}
+function loadRecords(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(x)?x.filter(r=>r&&r.date):[]}catch(e){return []}}
+function saveRecords(){localStorage.setItem(STORAGE_KEY,JSON.stringify(records))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function suggestedWorkout(date){const day=new Date(date+'T12:00:00').getDay();return ({2:'Pit + bíceps',3:'Cames',4:'Esquena + tríceps',6:'Pit + esquena + espatlles + abdomen'})[day]||'Descans'}
+function setDefaultDate(){ $('date').value=localDate(); $('workout').value=suggestedWorkout($('date').value)}
+function setRangeLabels(){rangeNames.forEach(n=>{const el=$(n),out=$(n+'Val');if(el&&out)out.textContent=el.value+'/10'})}
+rangeNames.forEach(n=>$(n).addEventListener('input',setRangeLabels));
+$('date').addEventListener('change',()=>{if(!editingDate)$('workout').value=suggestedWorkout($('date').value)});
+$('workout').addEventListener('change',()=>{const rest=$('workout').value==='Descans';$('performance').disabled=rest;$('performance').style.opacity=rest?'.45':'1'});
+function formRecord(){const v=id=>$(id).value;return {date:v('date'),sleepHours:Number(v('sleepHours')),awakenings:Number(v('awakenings')),sleepQuality:Number(v('sleepQuality')),rested:Number(v('rested')),mood:Number(v('mood')),stress:Number(v('stress')),tiredness:Number(v('tiredness')),energy:Number(v('energy')),workout:v('workout'),performance:v('workout')==='Descans'?'':Number(v('performance')),notes:v('notes').trim()}}
+function validate(r){if(!r.date)return 'Selecciona una data.';if(!Number.isFinite(r.sleepHours)||r.sleepHours<0||r.sleepHours>24)return 'Introdueix unes hores de son vàlides (de 0 a 24).';if(!Number.isInteger(r.awakenings)||r.awakenings<0||r.awakenings>30)return 'Introdueix un nombre vàlid de despertars.';return ''}
+$('entryForm').addEventListener('submit',e=>{e.preventDefault();const r=formRecord(),err=validate(r);if(err){$('formStatus').textContent=err;return}const i=records.findIndex(x=>x.date===r.date);if(i>=0)records[i]=r;else records.push(r);records.sort((a,b)=>a.date.localeCompare(b.date));saveRecords();$('formStatus').textContent='Registre del '+r.date+' desat correctament.';editingDate=null;$('saveBtn').textContent='Desa el registre';renderAll();});
+function resetForm(){editingDate=null;$('entryForm').reset();setDefaultDate();rangeNames.forEach(n=>$(n).value=({sleepQuality:7,rested:7,mood:7,stress:5,tiredness:5,energy:7,performance:7})[n]);setRangeLabels();$('saveBtn').textContent='Desa el registre';$('formStatus').textContent='';$('workout').dispatchEvent(new Event('change'))}
+$('resetBtn').addEventListener('click',resetForm);
+function editRecord(date){const r=records.find(x=>x.date===date);if(!r)return;editingDate=date;['date','sleepHours','awakenings','sleepQuality','rested','mood','stress','tiredness','energy','workout','performance','notes'].forEach(k=>{if(r[k]!==undefined&&r[k]!=='')$(k).value=r[k]});setRangeLabels();$('saveBtn').textContent='Actualitza el registre';$('formStatus').textContent='Editant el registre del '+date+'.';$('workout').dispatchEvent(new Event('change'));document.querySelector('[data-tab="registre"]').click();window.scrollTo({top:0,behavior:'smooth'})}
+function deleteRecord(date){if(!confirm('Vols eliminar el registre del '+date+'?'))return;records=records.filter(r=>r.date!==date);saveRecords();renderAll()}
+function renderHistory(){const root=$('historyContent');if(!records.length){root.innerHTML='<div class="empty">Encara no has desat cap registre. Comença a la pestanya «Registre diari».</div>';return}
+let rows=[...records].reverse().map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.sleepHours)} h</td><td>${esc(r.sleepQuality)}/10</td><td>${esc(r.awakenings)}</td><td>${esc(r.energy)}/10</td><td>${r.performance===''?'—':esc(r.performance)+'/10'}</td><td>${esc(r.workout)}</td><td><button class="small-btn" data-edit="${esc(r.date)}">Edita</button><button class="small-btn" data-delete="${esc(r.date)}">Elimina</button></td></tr>`).join('');
+root.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Data</th><th>Son</th><th>Qualitat</th><th>Despertars</th><th>Energia</th><th>Rendiment</th><th>Entrenament</th><th>Accions</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+root.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editRecord(b.dataset.edit)));root.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>deleteRecord(b.dataset.delete)))}
+function mean(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:null}
+function drawChart(canvas,draw){const dpr=window.devicePixelRatio||1,w=canvas.clientWidth||300,h=canvas.clientHeight||250;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const c=canvas.getContext('2d');c.scale(dpr,dpr);draw(c,w,h)}
+function axes(c,w,h,pad={l:36,r:14,t:16,b:35}){c.strokeStyle='#dce5ea';c.lineWidth=1;c.fillStyle='#617382';c.font='11px system-ui';for(let i=0;i<=4;i++){const y=pad.t+(h-pad.t-pad.b)*i/4;c.beginPath();c.moveTo(pad.l,y);c.lineTo(w-pad.r,y);c.stroke()}return {x0:pad.l,x1:w-pad.r,y0:pad.t,y1:h-pad.b}}
+function renderScatter(){const data=records.filter(r=>r.workout!=='Descans'&&r.performance!==''&&Number.isFinite(Number(r.performance))&&Number.isFinite(Number(r.sleepHours)));const note=$('scatterNote');if(data.length<1){note.textContent='Encara no hi ha dies d’entrenament registrats amb dades de rendiment.'}else{note.textContent=data.length+' dia/dies d’entrenament representats. Cada punt és una observació, no una prova que el son sigui l’única causa del rendiment.'}
+drawChart($('scatterChart'),(c,w,h)=>{const p=axes(c,w,h);c.fillStyle='#617382';c.font='11px system-ui';for(let i=0;i<=4;i++){c.fillText(String((10-i*2.5).toFixed(i===4?0:1)),4,p.y0+(p.y1-p.y0)*i/4+4)}c.fillText('Hores de son →',Math.max(p.x0,w/2-40),h-7);if(!data.length)return;const minX=Math.min(0,...data.map(r=>Number(r.sleepHours))),maxX=Math.max(10,...data.map(r=>Number(r.sleepHours)));const x=v=>p.x0+(v-minX)/(maxX-minX)*(p.x1-p.x0),y=v=>p.y1-(v-1)/9*(p.y1-p.y0);[1,3,5,7,9].forEach(v=>c.fillText(v,p.x0-19,y(v)+4));data.forEach(r=>{c.beginPath();c.arc(x(Number(r.sleepHours)),y(Number(r.performance)),5,0,Math.PI*2);c.fillStyle='#176b87';c.fill()})})}
+function renderTrend(){const data=records.slice(-14);drawChart($('trendChart'),(c,w,h)=>{const p=axes(c,w,h);if(!data.length){c.fillStyle='#617382';c.fillText('Desa registres per veure la gràfica.',p.x0+5,55);return}const x=i=>data.length===1?(p.x0+p.x1)/2:p.x0+i/(data.length-1)*(p.x1-p.x0),ySleep=v=>p.y1-v/12*(p.y1-p.y0),yScore=v=>p.y1-(v-1)/9*(p.y1-p.y0);c.fillStyle='#617382';c.font='10px system-ui';[0,3,6,9,12].forEach(v=>c.fillText(v,p.x0-20,ySleep(v)+4));const drawLine=(vals,fn,color)=>{let started=false;c.beginPath();vals.forEach((v,i)=>{if(v===null||v===undefined||v==='') {started=false;return}if(!started){c.moveTo(x(i),fn(Number(v)));started=true}else c.lineTo(x(i),fn(Number(v)))});c.strokeStyle=color;c.lineWidth=2.5;c.stroke();vals.forEach((v,i)=>{if(v===null||v===undefined||v==='')return;c.beginPath();c.arc(x(i),fn(Number(v)),3,0,Math.PI*2);c.fillStyle=color;c.fill()})};drawLine(data.map(r=>r.sleepHours),ySleep,'#176b87');drawLine(data.map(r=>r.performance),yScore,'#d27b32');c.fillStyle='#617382';data.forEach((r,i)=>{if(i%Math.max(1,Math.ceil(data.length/7))===0||i===data.length-1)c.fillText(r.date.slice(5),x(i)-15,h-8)});c.fillStyle='#176b87';c.fillRect(p.x0,5,9,9);c.fillStyle='#617382';c.fillText('Son (h)',p.x0+13,14);c.fillStyle='#d27b32';c.fillRect(p.x0+70,5,9,9);c.fillStyle='#617382';c.fillText('Rendiment /10',p.x0+83,14)})}
+function renderSummary(){const avgS=mean(records.map(r=>Number(r.sleepHours)).filter(Number.isFinite)),perf=mean(records.filter(r=>r.workout!=='Descans'&&r.performance!=='').map(r=>Number(r.performance)).filter(Number.isFinite));$('avgSleep').textContent=avgS===null?'—':avgS.toFixed(1)+' h';$('avgPerformance').textContent=perf===null?'—':perf.toFixed(1)+'/10';$('daysCount').textContent=records.length;
+const groups=[{label:'Menys de 6 h',test:r=>r.sleepHours<6},{label:'De 6 a menys de 8 h',test:r=>r.sleepHours>=6&&r.sleepHours<8},{label:'8 h o més',test:r=>r.sleepHours>=8}];const root=$('sleepGroups');const html=groups.map(g=>{const rs=records.filter(r=>g.test(r)&&r.workout!=='Descans'&&r.performance!=='');const m=mean(rs.map(r=>Number(r.performance)).filter(Number.isFinite));return `<div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px"><span>${g.label} <span style="color:var(--muted)">(${rs.length} dies)</span></span><strong>${m===null?'—':m.toFixed(1)+'/10'}</strong></div>`}).join('');root.className='';root.innerHTML=html+'<p class="hint">Aquests intervals són només una manera pràctica de resumir les dades; no són recomanacions mèdiques.</p>';renderScatter();renderTrend()}
+function renderAll(){renderHistory();renderSummary()}
+function csvCell(v){let s=String(v??'');if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+$('exportBtn').addEventListener('click',()=>{if(!records.length){alert('Encara no hi ha dades per exportar.');return}const headers=['data','hores_dormides','despertars','qualitat_son_1_10','sensacio_descans_1_10','estat_anim_1_10','estres_1_10','cansament_1_10','energia_1_10','entrenament','rendiment_1_10','observacions'];const keys=['date','sleepHours','awakenings','sleepQuality','rested','mood','stress','tiredness','energy','workout','performance','notes'];const csv='\ufeff'+[headers,...records.map(r=>keys.map(k=>r[k]??''))].map(row=>row.map(csvCell).join(';')).join('\r\n');download(csv,'text/csv;charset=utf-8','son-rendiment-tr.csv')});
+$('backupBtn').addEventListener('click',()=>download(JSON.stringify(records,null,2),'application/json','son-rendiment-copia.json'));
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());if(!Array.isArray(parsed)||parsed.some(r=>!r.date))throw new Error('format');if(!confirm('La importació substituirà els registres actuals. Vols continuar?'))return;records=parsed;records.sort((a,b)=>a.date.localeCompare(b.date));saveRecords();renderAll();alert('Còpia importada correctament.')}catch(err){alert('No s’ha pogut importar el fitxer. Comprova que sigui una còpia JSON creada per aquesta aplicació.')}finally{e.target.value=''}});
+function download(content,type,name){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));if(b.dataset.tab==='analisi')renderSummary()}));
+window.addEventListener('resize',()=>{if($('analisi').classList.contains('active'))renderSummary()});
+setDefaultDate();setRangeLabels();$('workout').dispatchEvent(new Event('change'));renderAll();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
